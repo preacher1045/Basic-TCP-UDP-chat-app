@@ -10,6 +10,7 @@ class TCP_Logic:
         # Create a socket
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         print("Socket created successfully..")
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         # Bind the socket
         s.bind((HOST, PORT))
         # Start listerning
@@ -40,6 +41,7 @@ class TCP_Logic:
                     with clients_lock:
                         for c in clients:
                             if c != sender:
+                                print(f"Broadcasting message: {msg.decode(errors='ignore')}")
                                 c.sendall(msg)
 
         # start broadcasting
@@ -67,18 +69,25 @@ class TCP_Logic:
                 s.close()
                 sys.exit(0)  #clean exit
 
-    # def tcp_Protocol_clientSide():
-    #     HOST = "127.0.0.1"
-    #     PORT = 40252
-    #     msg = "Hello server, this is client"
-    #     # Create a socket
-    #     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    #     # Establish connection to server
-    #     s.connect((HOST, PORT))
-    #     # Send Msg to server
-    #     s.send(2024)
-    #     # Recieve Reply from server
-    #     s.recv(2040)
+    def tcp_Protocol_clientSide():
+        HOST = "127.0.0.1"
+        PORT = 40252
+        # Create a socket
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        # Establish connection to server
+        s.connect((HOST, PORT))
+        # Recieve user_input
+        username = input("Enter a username: ")
+        msg = input("\nMessage: ")
+        msgPrepend = f"<<{username}>> {msg}"
+        send_msg = bytearray(msgPrepend, "UTF-8")
+
+        # Continue communication
+        while True:
+            # Send Msg to server
+            s.send(send_msg)
+            # Recieve Reply from server
+            s.recv(2040)
     
 
 TCP_Logic.tcp_protocol_serverSide()
