@@ -1,3 +1,6 @@
+import socket
+import sys
+
 class Tcp_Client:
     def tcp_Protocol_clientSide():
         HOST = "127.0.0.1"
@@ -13,7 +16,7 @@ class Tcp_Client:
             msg = input("\nMessage: ").lower()
             if msg == "quit" or msg == "disconnect":
                 print("User has left")
-                s.send(msg)
+                # s.send(msg)
                 s.close()
                 sys.exit(0)
                 break
@@ -26,3 +29,5 @@ class Tcp_Client:
                 recieved = s.recv(2040)
                 recv_msg = recieved.decode()
                 print(recv_msg)
+
+Tcp_Client.tcp_Protocol_clientSide()

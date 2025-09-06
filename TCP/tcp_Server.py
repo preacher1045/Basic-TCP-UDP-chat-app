@@ -1,6 +1,6 @@
 import queue, threading,socket, sys
 
-class TCP_Logic:
+class Tcp_Server:
     def tcp_protocol_serverSide():
         HOST = "127.0.0.1"
         PORT = 40252
@@ -73,7 +73,4 @@ class TCP_Logic:
                 s.close()
                 sys.exit(0)  #clean exit
 
-    
-
-TCP_Logic.tcp_protocol_serverSide()
-
+Tcp_Server.tcp_protocol_serverSide()
